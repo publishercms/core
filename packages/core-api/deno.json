@@ -1,0 +1,26 @@
+{
+  "tasks": {
+    "dev": "deno run --allow-net --allow-env --allow-read --watch main.ts",
+    "start": "deno run --allow-net --allow-env --allow-read main.ts",
+    "db:generate": "deno run --allow-read --allow-write --allow-run --allow-env drizzle/scripts/generate.ts",
+    "db:generate_old": "deno -A npm:drizzle-kit generate",
+    "db:migrate": "deno -A npm:drizzle-kit migrate",
+    "db:seed": "deno run --allow-net --allow-read --allow-env drizzle/seed.ts"
+  },
+  "imports": {
+    "hono": "https://deno.land/x/hono@v3.2.6/mod.ts",
+    "hono/middleware": "https://deno.land/x/hono@v3.2.6/middleware.ts",
+    "@felix/bcrypt": "jsr:@felix/bcrypt@^1.0.5",
+    "@hig/jwt": "jsr:@hig/jwt@^0.1.1",
+    "@std/dotenv": "jsr:@std/dotenv@^0.225.2",
+    "@std/http": "jsr:@std/http@^1.0.10",
+    "@std/path": "jsr:@std/path@^1.0.8",
+    "drizzle-orm": "npm:drizzle-orm@^0.36.4",
+    "drizzle-kit": "npm:drizzle-kit@^0.30.0",
+    "postgres": "npm:postgres@^3.4.5"
+  },
+  "compilerOptions": {
+    "lib": ["deno.window"],
+    "strict": true
+  }
+}

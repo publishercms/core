@@ -1,0 +1,55 @@
+name: publisher-cms
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: core-db
+    environment:
+      POSTGRES_DB: cms_dev
+      POSTGRES_USER: cms
+      POSTGRES_PASSWORD: cms
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  core-api:
+    build:
+      context: ./packages/core-api
+      dockerfile: Dockerfile
+    container_name: core-api
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgres://cms:cms@db:5432/cms_dev
+      NODE_ENV: development
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./packages/core-api:/app
+      - ./development/config:/app/config
+      - ./development/plugins:/app/plugins
+      - /app/node_modules
+    command: deno run --allow-net --allow-env --allow-read --allow-write --watch main.ts
+
+  pgadmin:
+    image: dpage/pgadmin4:9.5
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
+
+volumes:
+  db_data:
+  pgadmin_data:

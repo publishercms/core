@@ -1,0 +1,19 @@
+{
+  "name": "publisher-cms",
+  "version": "1.0.0",
+  "description": "Schema based CMS",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "docker-compose up -d",
+    "dev:logs": "docker-compose logs -f",
+    "dev:down": "docker-compose down",
+    "dev:rebuild": "docker-compose down && docker-compose up --build -d",
+    "api:dev": "cd packages/core-api && deno run --allow-net --allow-env --allow-read --watch main.ts",
+    "api:db:generate": "cd packages/core-api && deno run --allow-read --allow-write --allow-env drizzle/generate.ts",
+    "api:db:migrate": "cd packages/core-api && deno run --allow-net --allow-read --allow-env drizzle/migrate.ts",
+    "api:db:seed": "cd packages/core-api && deno run --allow-net --allow-read --allow-env drizzle/seed.ts"
+  }
+}
