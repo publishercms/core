@@ -1,0 +1,52 @@
+{
+  "name": "publishercms-client",
+  "version": "0.0.12",
+  "description": "",
+  "license": "MIT",
+  "author": "",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./index.d.ts"
+    },
+    "./cli": {
+      "import": "./dist/cli.js",
+      "require": "./dist/cli.js",
+      "types": "./dist/cli.d.ts"
+    }
+  },
+  "bin": {
+    "publishercms-client": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "index.d.ts",
+    "fallback-types.d.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "postbuild": "cp index.d.ts dist/index.d.ts",
+    "dev": "tsc -w",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "@trpc/client": "^11.4.4",
+    "fs": "^0.0.1-security",
+    "node-fetch": "^3.3.2",
+    "path": "^0.12.7",
+    "publishercms-client": "^0.0.11"
+  },
+  "peerDependencies": {
+    "@trpc/server": "^11.4.4"
+  },
+  "devDependencies": {
+    "@trpc/server": "^11.4.4"
+  }
+}

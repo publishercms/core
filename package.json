@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Schema based CMS",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
     "dev": "docker-compose up -d",
     "dev:logs": "docker-compose logs -f",

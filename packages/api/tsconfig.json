@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    /* Language and environment */
+    "target": "ES2020",              // modern JS features
+    "module": "CommonJS",            // run directly in Node, no extensions required
+    "moduleResolution": "Node",      // classic Node-style import resolution
+
+    /* Type checking & tooling */
+    "esModuleInterop": true,         // allow default imports from CJS
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "strict": true,
+
+    /* Output control (not really used since you won’t compile) */
+    "outDir": "dist",
+    "declaration": false
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
