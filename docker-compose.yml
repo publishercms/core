@@ -42,6 +42,7 @@ services:
       DATABASE_URL: postgres://cms:cms@db:5432/cms_dev
       NODE_ENV: development
       PORT: 8001
+      JWT_SECRET: secret_key
     depends_on:
       db:
         condition: service_healthy
