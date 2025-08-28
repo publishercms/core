@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
+import { client } from "@/lib/client";
+import { LoginForm } from "@/components/forms/login-form";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
-import { createFileRoute } from "@tanstack/react-router";
 
 export const LoginPage = () => {
+  const router = useRouter();
   return (
     <div className="h-full w-full flex flex-col justify-center items-center max-w-xl mx-auto">
       <div className="text-center my-10">
@@ -20,35 +20,15 @@ export const LoginPage = () => {
         </CardHeader>
 
         <CardContent className="flex flex-col gap-2">
-          <div>
-            <Label htmlFor="input-email">
-              Email
-            </Label>
-
-            <Input
-              id="input-email"
-              placeholder="Email"
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="input-password">
-              Password
-            </Label>
-
-            <Input
-              id="input-password"
-              placeholder="Password"
-              type="password"
-            />
-          </div>
+          <LoginForm
+            onSubmit={async (values) => {
+              const token = await client.user.login(values);
+              if (token != null) {
+                router.invalidate();
+              }
+            }}
+          />
         </CardContent>
-
-        <CardFooter>
-          <Button className="w-full" size="lg">
-            Sign in
-          </Button>
-        </CardFooter>
       </Card>
     </div>
   );
@@ -56,4 +36,9 @@ export const LoginPage = () => {
 
 export const Route = createFileRoute('/login')({
   component: LoginPage,
+  beforeLoad: ({ context }) => {
+    if (context.user != null) {
+      throw redirect({ to: '/' });
+    }
+  },
 });
