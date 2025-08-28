@@ -1,11 +1,12 @@
 #!/bin/sh
 set -e
 
-echo "Starting publishercms/core/core-api"
+echo "Starting publishercms/core/api"
 
 # Run database migration task
-# npm run db:migrate
+npm run db:migrate
 
+echo "";
 echo "~~ ############### ~~";
 
 npx ts-node generateClientTypes.ts

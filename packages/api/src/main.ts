@@ -2,14 +2,11 @@ import { Hono } from "hono";
 import { serve } from "@hono/node-server"
 import { serveStatic } from '@hono/node-server/serve-static'
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
+import { createContext } from "./utils/trpc";
 
 // Import main router
 import { appRouter } from "./infra/router";
 
-function createContext(req: Request) {
-  const token = req.headers.get("authorization")?.replace("Bearer ", "") ?? null;
-  return { token };
-};
 
 // Create main app
 const PORT = process.env.PORT ?? 8000;
@@ -20,7 +17,7 @@ app.all("/trpc/*", (c) =>
     endpoint: "/trpc",
     req: c.req.raw,
     router: appRouter,
-    createContext: () => createContext(c.req.raw),
+    createContext: () => createContext({ req: c.req.raw }),
   })
 );
 

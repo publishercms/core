@@ -1,11 +1,14 @@
-import { jsonb, pgTable, serial, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { jsonb, pgEnum, pgTable, serial, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 
 // Define core schemas
 
+export const roleEnum = pgEnum("user_role", ["user", "admin", "root"]);
+
 export const usersSchema = pgTable('users', {
   id: uuid('id').defaultRandom().primaryKey(),
-  username: text('username').unique().notNull(),
   password: text('password').notNull(),
+  name: text("name").notNull(),
+  role: roleEnum("role").default("user").notNull(),
   email: text('email').unique().notNull(),
 });
 
