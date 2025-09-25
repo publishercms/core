@@ -1,6 +1,9 @@
 import { initTRPC } from "@trpc/server";
 import { verifyJwt } from "./jwt";
 
+// Service instances for global TRPC context
+import { configurationService } from "../services/configuration.service";
+
 export async function createContext({ req }: { req: Request }) {
   const authHeader = req.headers.get("authorization");
   let user: { id: string; email: string } | null = null;
@@ -11,7 +14,10 @@ export async function createContext({ req }: { req: Request }) {
     if (decoded) user = decoded;
   }
 
-  return { user };
+  return {
+    user,
+    configurationService,
+  };
 };
 
 export const t = initTRPC.context<Awaited<ReturnType<typeof createContext>>>().create();

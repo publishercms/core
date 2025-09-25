@@ -55,7 +55,6 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 function RootComponent() {
   return (
     <>
-      <div>Hello "__root"!</div>
       <Outlet />
       <Toaster />
     </>

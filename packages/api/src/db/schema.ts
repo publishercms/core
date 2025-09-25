@@ -17,6 +17,7 @@ export type NewUser = typeof usersSchema.$inferSelect;
 
 export const postsSchema = pgTable('posts', {
   id: serial('id').primaryKey(),
+  type: varchar('type', { length: 39 }).default('').notNull(),
   title: text('title').notNull(),
   slug: varchar('slug', { length: 255 }).notNull().unique(),
   status: varchar('status', { length: 255 }).notNull(),

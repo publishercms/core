@@ -9,7 +9,7 @@ import { appRouter } from "./infra/router";
 
 
 // Create main app
-const PORT = process.env.PORT ?? 8000;
+const PORT = process.env.PORT ?? 8001;
 const app = new Hono();
 
 app.all("/trpc/*", (c) =>

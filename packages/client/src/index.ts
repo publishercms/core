@@ -4,6 +4,10 @@ function setAuthToken(token: string) {
   localStorage.setItem('pubcms-token', token);
 };
 
+function removeAuthToken() {
+  localStorage.removeItem('pubcms-token');
+};
+
 function getAuthToken() {
   return localStorage.getItem('pubcms-token');
 };
@@ -48,6 +52,9 @@ export function createClient(config: { apiUrl: string }) {
       }
 
       return undefined;
+    },
+    logout: () => {
+      removeAuthToken();
     },
   };
 

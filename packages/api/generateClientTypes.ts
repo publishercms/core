@@ -15,12 +15,26 @@ const parsed = ts.parseJsonConfigFileContent(configFile.config, ts.sys, path.dir
 const program = ts.createProgram(parsed.fileNames, parsed.options);
 const checker = program.getTypeChecker();
 
+const hidden_client_types = [
+  "ConfigurationService",
+  "$strip",
+];
+
 const known_external_types = [
   ["BuiltRouter", "TRPCBuiltRouter"],
   ["DefaultErrorShape", "TRPCDefaultErrorShape"],
   ["DecorateCreateRouterOptions", "TRPCDecorateCreateRouterOptions"],
   ["QueryProcedure", "TRPCQueryProcedure"],
   ["MutationProcedure", "TRPCMutationProcedure"],
+];
+
+const known_zod_types = [
+  "ZodBoolean",
+  "ZodString",
+  "ZodObject",
+  "ZodArray",
+  "ZodOptional",
+  "output",
 ];
 
 const sourceFile = program.getSourceFile(ENTRY);
@@ -54,20 +68,20 @@ if (moduleSymbol) {
     const typeStr = serializeType(type);
 
     if (ts.isVariableDeclaration(decl)) {
-      body += `export declare const ${name}: ${typeStr};\n\n`;
+      body += `export declare const ${name}: ${typeStr};\n`;
     } else if (ts.isFunctionDeclaration(decl)) {
-      body += `export declare function ${name}${typeStr};\n\n`;
+      body += `export declare function ${name}${typeStr};\n`;
     } else if (exp.declarations?.some(d => ts.isInterfaceDeclaration(d) || ts.isTypeAliasDeclaration(d))) {
       for (const d of exp.declarations) {
         const declaration = d.getText(sourceFile);
         if (declaration.includes('export')) {
-          body += `${declaration}\n\n`;
+          body += `${declaration}\n`;
         } else {
-          body += `export ${declaration}\n\n`;
+          body += `export ${declaration}\n`;
         }
       }
     } else {
-      body += `export declare const ${name}: ${typeStr};\n\n`;
+      body += `export declare const ${name}: ${typeStr};\n`;
     }
   }
 }
@@ -79,11 +93,21 @@ for (const [_from, to] of known_external_types) {
   addImport("@trpc/server", to);
 }
 
+for (const type of known_zod_types) {
+  addImport("zod", type);
+}
+
 for (const [mod, names] of imports) {
   output += `import { ${Array.from(names).join(", ")} } from "${mod}";\n`;
 }
 
-output += `\n${body}`;
+output += `\n`;
+
+for (const hidden_type of hidden_client_types) {
+  output += `type ${hidden_type} = any;\n`;
+}
+
+output += `${body}`;
 
 for (const [from, to] of known_external_types) {
   const regex = new RegExp(`\\b${from}\\b`, "g");

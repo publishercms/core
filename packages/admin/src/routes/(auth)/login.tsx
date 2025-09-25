@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export const LoginPage = () => {
   const router = useRouter();
+
   return (
     <div className="h-full w-full flex flex-col justify-center items-center max-w-xl mx-auto">
       <div className="text-center my-10">
@@ -34,7 +35,7 @@ export const LoginPage = () => {
   );
 };
 
-export const Route = createFileRoute('/login')({
+export const Route = createFileRoute('/(auth)/login')({
   component: LoginPage,
   beforeLoad: ({ context }) => {
     if (context.user != null) {

@@ -8,6 +8,7 @@ export type PublisherClient<TRouter extends AnyRouter = AnyRouter> = {
       email: string;
       password: string;
     }) => Promise<string | undefined>;
+    logout: () => void;
   },
 };
 

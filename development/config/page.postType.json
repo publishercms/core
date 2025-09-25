@@ -1,0 +1,11 @@
+{
+  "name": "page",
+  "label": {
+    "single": "Page",
+    "multiple": "Pages"
+  },
+  "meta": [],
+  "admin": {
+    "icon": "panel-top"
+  }
+}

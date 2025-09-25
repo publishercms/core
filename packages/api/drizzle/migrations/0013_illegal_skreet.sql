@@ -1,0 +1,1 @@
+ALTER TABLE "posts" ADD COLUMN "type" varchar(39) DEFAULT '' NOT NULL;
